@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Display Image</title>
+</head>
+<body>
+  <img id="image" src="" alt="Image">
+  <script>
+    // The binary data as a hexadecimal string
+    const binaryData = 'iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQA';
+
+    // Decode the hexadecimal string into binary data
+    const binaryArray = new Uint8Array(binaryData.match(/[\da-f]{2}/gi).map((h) => parseInt(h, 16)));
+    const blob = new Blob([binaryArray], { type: 'image/png' });
+
+    // Create a data URL for the image
+    const imageUrl = URL.createObjectURL(blob);
+
+    // Display the image
+    const imageElement = document.getElementById('image');
+    imageElement.src = imageUrl;
+  </script>
+</body>
+</html>
