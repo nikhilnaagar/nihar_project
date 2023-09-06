@@ -29,3 +29,4 @@ http://localhost:3000/user/addProperty
         "propertyDate": "2023-09-05T12:40:35.054Z",
         "createdAt": "2023-09-05T12:40:35.054Z",
         "propertyImages" : []
+http://localhost:3000/user/property
