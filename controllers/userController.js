@@ -1,11 +1,12 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+
 const User = require('../models/User');
 const Property = require('../models/Property');
 
 exports.register = async (req, res) => {
   const { username, password } = req.body;
-  
+
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({ username, password: hashedPassword });
@@ -38,44 +39,44 @@ exports.login = async (req, res) => {
 };
 
 exports.dashboard = (req, res) => {
-    const user = req.user;
-    res.status(200).json({ message: 'Welcome to the dashboard', user });
-  };
+  const user = req.user;
+  res.status(200).json({ message: 'Welcome to the dashboard', user });
+};
 
 exports.addProperty = async (req, res) => {
-  const { propertyName, propertyDescription, propertySummary, propertyType, propertyAddress, ownerName } = req.body;
-
-  // if (!req.files) {
-  //   return res.status(400).json({ error: 'Image is required' });
-  // }
-
-  const propertyImages = req.files.map((file) => ({
-    data: file.buffer,
-    contentType: file.mimetype,
-  }));
-
   try {
-    const newProperty = new Property({
+    const {
       propertyName,
       propertyDescription,
       propertySummary,
       propertyType,
       propertyAddress,
       ownerName,
-      propertyImages,
+    } = req.body;
+
+
+    const propertyImagesPaths = req.files.map((file) => file.location);
+
+    const property = new Property({
+      propertyName,
+      propertyDescription,
+      propertySummary,
+      propertyType,
+      propertyAddress,
+      ownerName,
+      propertyImagesPaths,
     });
 
-    const savedProperty = await newProperty.save();
+    await Property.save();
 
-    // console.log('Property added successfully:', savedProperty);
-    res.status(201).json(savedProperty);
+    res.json({ message: 'Property uploaded successfully', property });
   } catch (err) {
     console.error('Error adding property:', err);
     res.status(500).json({ error: 'Failed to add property' });
   }
 };
 
-exports.property = async (req,res,next) => {
+exports.property = async (req, res, next) => {
 
   const property = await Property.find();
   res.status(200).json(property);

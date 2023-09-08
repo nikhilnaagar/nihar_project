@@ -1,12 +1,10 @@
 const mongoose = require('mongoose');
 
 const propertySchema = new mongoose.Schema({
-    propertyImages: [
-        {
-            data: Buffer, // Binary image data
-            contentType: String, // MIME type of the image
-        },
-    ],
+    propertyImagesPaths: {
+        type: [String],
+        required: true
+    },
     propertyName: {
         type: String,
         required: true,
